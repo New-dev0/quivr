@@ -2,6 +2,8 @@ import logging
 from operator import itemgetter
 from typing import AsyncGenerator, Optional, Sequence
 
+import quivr_core.generation
+
 # TODO(@aminediro): this is the only dependency to langchain package, we should remove it
 from langchain.retrievers import ContextualCompressionRetriever
 from langchain_core.callbacks import Callbacks
@@ -92,6 +94,7 @@ class QuivrQARAG:
         return filtered_chat_history[::-1]
 
     def build_chain(self, files: str):
+        logger.info("calling build chain")
         compression_retriever = ContextualCompressionRetriever(
             base_compressor=self.reranker, base_retriever=self.retriever
         )
@@ -130,9 +133,29 @@ class QuivrQARAG:
         # Bind the llm to cited_answer if model supports it
         llm = self.llm_endpoint._llm
         if self.llm_endpoint.supports_func_calling():
+            logger.info("the llm model supports func calling ")
             llm = self.llm_endpoint._llm.bind_tools(
-                [cited_answer],
-                tool_choice="any",
+                [
+                    quivr_core.generation.get_channel_group_history,
+                    quivr_core.generation.get_channel_list,
+                    quivr_core.generation.get_group_list,
+                    quivr_core.generation.update_community_description,
+                    quivr_core.generation.create_channel,
+                    quivr_core.generation.get_community_detail,
+                    quivr_core.generation.get_community_chat_analysis,
+                    quivr_core.generation.get_bots_in_community,
+                    quivr_core.generation.delete_all_messages,
+                    quivr_core.generation.add_bot_to_community,
+                    quivr_core.generation.get_commands_in_channel_group,
+                    quivr_core.generation.create_role,
+                    quivr_core.generation.get_roles_in_community,
+                    quivr_core.generation.add_user_to_role,
+                    quivr_core.generation.send_message,
+                    quivr_core.generation.create_group,
+                    quivr_core.generation.get_community_guidelines,
+                    quivr_core.generation.get_user_info,
+                    cited_answer,
+                ],
             )
 
         answer = {
@@ -171,7 +194,7 @@ class QuivrQARAG:
     ) -> AsyncGenerator[ParsedRAGChunkResponse, ParsedRAGChunkResponse]:
         concat_list_files = format_file_list(list_files, self.rag_config.max_files)
         conversational_qa_chain = self.build_chain(concat_list_files)
-
+        logger.info(f"using chat history: {history}")
         rolling_message = AIMessageChunk(content="")
         sources = []
         prev_answer = ""
