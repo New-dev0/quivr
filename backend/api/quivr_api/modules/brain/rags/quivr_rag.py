@@ -78,7 +78,7 @@ Answer:
 today_date = datetime.datetime.now().strftime("%B %d, %Y")
 
 system_message_template = (
-    f"Your name is Quivr. You're a helpful assistant. Today's date is {today_date}."
+    f"Your name is Switch Community AI. You're a helpful assistant. Today's date is {today_date}."
 )
 
 system_message_template += """

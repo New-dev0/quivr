@@ -15,6 +15,7 @@ from .parsers.powerpoint import process_powerpoint
 from .parsers.telegram import process_telegram
 from .parsers.txt import process_txt
 from .parsers.xlsx import process_xlsx
+from .parsers.json import process_json
 
 file_processors = {
     ".txt": process_txt,
@@ -40,6 +41,7 @@ file_processors = {
     ".epub": process_epub,
     ".ipynb": process_ipnyb,
     ".py": process_python,
+    ".json": process_json,
 }
 
 

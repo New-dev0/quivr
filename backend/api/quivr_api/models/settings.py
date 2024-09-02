@@ -158,6 +158,9 @@ def get_pg_database_engine():
             settings.pg_database_url,
             pool_pre_ping=True,
             isolation_level="AUTOCOMMIT",
+            max_overflow=20,
+            pool_size=20,
+            pool_timeout=60
         )
     return _db_engine
 
@@ -171,6 +174,9 @@ def get_pg_database_async_engine():
             connect_args={"server_settings": {"application_name": "quivr-api-async"}},
             pool_pre_ping=True,
             isolation_level="AUTOCOMMIT",
+            max_overflow=20,
+            pool_size=20,
+            pool_timeout=60
         )
     return _db_engine
 
