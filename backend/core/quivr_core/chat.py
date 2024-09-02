@@ -2,7 +2,7 @@ from datetime import datetime
 from typing import Any, Generator, Tuple
 from uuid import UUID, uuid4
 
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from quivr_core.models import ChatMessage
 
 
@@ -28,7 +28,7 @@ class ChatHistory:
         return len(self._msgs)
 
     def append(
-        self, langchain_msg: AIMessage | HumanMessage, metadata: dict[str, Any] = {}
+        self, langchain_msg: AIMessage | HumanMessage | ToolMessage, metadata: dict[str, Any] = {}
     ):
         chat_msg = ChatMessage(
             chat_id=self.id,
@@ -40,14 +40,19 @@ class ChatHistory:
         )
         self._msgs.append(chat_msg)
 
-    def iter_pairs(self) -> Generator[Tuple[HumanMessage, AIMessage], None, None]:
+    def iter_pairs(self) -> Generator[Tuple[HumanMessage, AIMessage, ToolMessage], None, None]:
         # Reverse the chat_history, newest first
         it = iter(self.get_chat_history(newest_first=True))
+        it = list(filter(lambda x: not isinstance(x.msg, ToolMessage), it))
         for ai_message, human_message in zip(it, it):
-            assert isinstance(
-                human_message.msg, HumanMessage
-            ), f"msg {human_message} is not HumanMessage"
-            assert isinstance(
-                ai_message.msg, AIMessage
-            ), f"msg {human_message} is not AIMessage"
-            yield (human_message.msg, ai_message.msg)
+            try:
+                assert isinstance(
+                    human_message.msg, HumanMessage
+                ), f"msg {human_message} is not HumanMessage"
+                assert isinstance(
+                    ai_message.msg, AIMessage
+                ), f"msg {human_message} is not AIMessage"
+                yield (human_message.msg, ai_message.msg)
+            except AssertionError as e:
+            #    print(e)
+                continue

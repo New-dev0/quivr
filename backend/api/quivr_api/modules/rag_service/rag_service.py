@@ -57,6 +57,7 @@ class RAGService:
         self.chat_id = chat_id
         self.brain = brain
         self.prompt = self.get_brain_prompt(self.brain)
+        print(brain.model, 60, "?60")
 
         # check at init time
         self.model_to_use = brain.model
@@ -82,13 +83,15 @@ class RAGService:
         return chat_history
 
     async def _build_rag_config(self) -> RAGConfig:
+#        self.model_to_use = "ollama/mistral"
         model = await self.model_service.get_model(self.model_to_use)  # type: ignore
         api_key = os.getenv(model.env_variable_name, "not-defined")
+        print(api_key, 85, "?85", model)
 
         rag_config = RAGConfig(
             llm_config=LLMEndpointConfig(
                 model=self.model_to_use,  # type: ignore
-                llm_base_url=model.endpoint_url,
+                llm_base_url= model.endpoint_url,
                 llm_api_key=api_key,
                 temperature=(LLMEndpointConfig.model_fields["temperature"].default),
                 max_input=model.max_input,
@@ -96,6 +99,7 @@ class RAGService:
             ),
             prompt=self.prompt.content if self.prompt else None,
         )
+        print(rag_config, 95, "?95")
         return rag_config
 
     def get_llm(self, rag_config: RAGConfig):
@@ -159,7 +163,9 @@ class RAGService:
         #  Format the history, sanitize the input
         chat_history = self._build_chat_history(history)
 
-        parsed_response = rag_pipeline.answer(question, chat_history, list_files)
+        parsed_response = await rag_pipeline.answer(question, chat_history, list_files)
+        
+        print(parsed_response, 168)
 
         # Save the answer to db
         new_chat_entry = self.save_answer(question, parsed_response)

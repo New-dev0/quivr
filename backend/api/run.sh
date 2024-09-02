@@ -1,0 +1,1 @@
+uvicorn quivr_api.main:app --port=8000

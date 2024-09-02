@@ -212,6 +212,7 @@ class QuivrRAG(BaseModel):
             )
 
         api_base = None
+        print(model, self.brain_settings)
         if self.brain_settings.ollama_api_base_url and model.startswith("ollama"):
             api_base = (
                 self.brain_settings.ollama_api_base_url  # pyright: ignore reportPrivateUsage=none

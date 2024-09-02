@@ -266,8 +266,9 @@ class Brain:
         )
 
         chat_history = self.default_chat
-
-        parsed_response = rag_pipeline.answer(question, chat_history, [])
+        loop = asyncio.get_event_loop()
+        
+        parsed_response = loop.run_until_complete(rag_pipeline.answer(question, chat_history, []))
 
         chat_history.append(HumanMessage(content=question))
         chat_history.append(AIMessage(content=parsed_response.answer))

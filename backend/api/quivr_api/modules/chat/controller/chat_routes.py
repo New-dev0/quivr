@@ -253,12 +253,15 @@ async def create_stream_question_handler(
     )
 
     models = await model_service.get_models()
+    
 
     model_to_use = None
     # Check if the brain_id is a model name hashed to a uuid and then returns the model name
     # if chat_question.brain_id in [generate_uuid_from_string(model.name) for model in models]:
     #     mode
+    print(models, 262)
     for model in models:
+        print(model.name, 264)
         if brain_id == generate_uuid_from_string(model.name):
             model_to_use = model
             break
@@ -274,6 +277,7 @@ async def create_stream_question_handler(
             assert brain is not None  # type: ignore
 
             brain.model = model.name
+            print(brain, 280)
             validate_authorization(user_id=current_user.id, brain_id=brain_id)
             service = RAGService(
                 current_user,

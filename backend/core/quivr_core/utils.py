@@ -22,6 +22,7 @@ logger = logging.getLogger("quivr_core")
 
 
 def model_supports_function_calling(model_name: str):
+    return True
     models_supporting_function_calls = [
         "gpt-4",
         "gpt-4-1106-preview",
@@ -122,13 +123,21 @@ def parse_response(raw_response: RawRAGResponse, model_name: str) -> ParsedRAGRe
 
     if model_supports_function_calling(model_name):
         if raw_response["answer"].tool_calls:
-            citations = raw_response["answer"].tool_calls[-1]["args"]["citations"]
-            metadata.citations = citations
-            followup_questions = raw_response["answer"].tool_calls[-1]["args"][
-                "followup_questions"
-            ]
-            if followup_questions:
-                metadata.followup_questions = followup_questions
+            try:
+                for tool_call in raw_response["answer"].tool_calls:
+                    print(tool_call, "is tool call 128")
+                    if tool_call["name"] == "cited_answer":
+                        if not answer and tool_call['args'].get("answer"):
+                            answer = tool_call["args"]["answer"]
+                        citations = tool_call["args"]["citations"]
+                        metadata.citations = citations
+                        followup_questions = tool_call["args"][
+                            "followup_questions"
+                        ]
+                        if followup_questions:
+                            metadata.followup_questions = followup_questions
+            except Exception as e:
+                print(e)
 
     parsed_response = ParsedRAGResponse(answer=answer, metadata=metadata)
     return parsed_response

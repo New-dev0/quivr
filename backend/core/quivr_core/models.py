@@ -3,7 +3,7 @@ from typing import Any
 from uuid import UUID
 
 from langchain_core.documents import Document
-from langchain_core.messages import AIMessage, HumanMessage
+from langchain_core.messages import AIMessage, HumanMessage, ToolMessage
 from langchain_core.pydantic_v1 import BaseModel as BaseModelV1
 from langchain_core.pydantic_v1 import Field as FieldV1
 from pydantic import BaseModel
@@ -32,7 +32,7 @@ class ChatMessage(BaseModelV1):
     chat_id: UUID
     message_id: UUID
     brain_id: UUID | None
-    msg: AIMessage | HumanMessage
+    msg: AIMessage | HumanMessage | ToolMessage
     message_time: datetime
     metadata: dict[str, Any]
 

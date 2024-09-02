@@ -122,7 +122,7 @@ class BrainSettings(BaseSettings):
     supabase_service_key: str = ""
     resend_api_key: str = "null"
     resend_email_address: str = "brain@mail.quivr.app"
-    ollama_api_base_url: str | None = None
+    ollama_api_base_url: str | None = "http://host.docker.internal:11434"
     langfuse_public_key: str | None = None
     langfuse_secret_key: str | None = None
     pg_database_url: str
@@ -145,6 +145,9 @@ _db_engine: Optional[Engine] = None
 _embedding_service = None
 
 settings = BrainSettings()
+# settings.ollama_api_base_url = 
+settings.openai_api_key = "pk-vWPPVunFUbpbTOQiScTPDeyMQqlKkFYJohnKvVJWrZckOyOm"
+# settings.ollama_api_base_url = "http://host.docker.internal:11434"
 
 
 def get_pg_database_engine():
@@ -192,6 +195,7 @@ def get_supabase_db() -> SupabaseDB:
 
 def get_embedding_client() -> Embeddings:
     global _embedding_service
+    print(settings)
     if settings.ollama_api_base_url:
         embeddings = OllamaEmbeddings(
             base_url=settings.ollama_api_base_url,

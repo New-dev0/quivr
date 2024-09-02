@@ -51,6 +51,7 @@ def update_user_usage(usage: UserUsage, user_settings, cost: int = 100):
     Raises:
         HTTPException: Raises a 429 error if the user has reached the limit.
     """
+    return
 
     date = time.strftime("%Y%m%d")
 

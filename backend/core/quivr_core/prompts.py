@@ -8,33 +8,32 @@ from langchain_core.prompts import (
 )
 
 # First step is to create the Rephrasing Prompt
-_template = """Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language. Keep as much details as possible from previous messages. Keep entity names and all.
+# Given the following conversation and a follow up question, rephrase the follow up question to be a standalone question, in its original language. Keep as much details as possible from previous messages. Keep entity names and all.
 
-Chat History:
+
+_template = """
 {chat_history}
-Follow Up Input: {question}
-Standalone question:"""
+
+provide response to: {question}
+"""
 CONDENSE_QUESTION_PROMPT = PromptTemplate.from_template(_template)
 
 # Next is the answering prompt
 
 template_answer = """
-Context:
 {context}
 
-User Question: {question}
+Question: {question}
 Answer:
 """
 
-today_date = datetime.datetime.now().strftime("%B %d, %Y")
+# today_date = datetime.datetime.now().strftime("%B %d, %Y")
 
 system_message_template = (
-    f"Your name is Quivr. You're a helpful assistant. Today's date is {today_date}."
+    "You are a Community AI assistant on Switch platform. Today's date is {today_date}."
 )
 
 system_message_template += """
-When answering use markdown.
-Use markdown code blocks for code snippets.
 Answer in a concise and clear manner.
 Use the following pieces of context from files provided by the user to answer the users.
 Answer in the same language as the user question.
@@ -55,6 +54,29 @@ ANSWER_PROMPT = ChatPromptTemplate.from_messages(
     ]
 )
 
+new_system_prompt = """You are a Community AI assistant on Switch platform. Today's date is {date}
+{custom_instructions}
+
+You have access to following files, use them to answer the user question.
+{files}
+"""
+
+NEW_ANSWER_PROMPT = ChatPromptTemplate.from_messages(
+        [
+            SystemMessagePromptTemplate.from_template(new_system_prompt),
+            HumanMessagePromptTemplate.from_template(template_answer)
+            
+        ]
+    )
+
+def get_answer_prompt(prompt):
+    return ChatPromptTemplate.from_messages(
+        [
+            SystemMessagePromptTemplate.from_template(prompt),
+            HumanMessagePromptTemplate.from_template(template_answer)
+            
+        ]
+    )
 
 # How we format documents
 DEFAULT_DOCUMENT_PROMPT = PromptTemplate.from_template(
