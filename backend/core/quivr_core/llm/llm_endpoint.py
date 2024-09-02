@@ -60,9 +60,9 @@ class LLMEndpoint:
                 # todo: change
                 _llm = ChatOpenAI(
                     model=config.model,
-                    api_key="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", #SecretStr(config.llm_api_key)
-          #          if config.llm_api_key
-           #         else None,
+                    api_key=SecretStr(config.llm_api_key)
+                    if config.llm_api_key
+                    else None,
                     base_url= config.llm_base_url,
                 )
             return cls(llm=_llm, llm_config=config)
