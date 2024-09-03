@@ -1,24 +1,29 @@
 import ast
 from typing import Optional, List
 from langchain_core.tools import tool
-from swibots import (
-    Community,
-    Channel,
-    Group,
-    Embed,
-    EmbeddedMedia,
-    EmbedInlineField,
-    RolePermission,
-    RoleMember,
-    InlineKeyboardButton, InlineMarkup
-)
-from langchain.pydantic_v1 import BaseModel
-from swibots.errors import NetworkError
-from swibots import Client
+try:
+    from swibots import (
+        Community,
+        Channel,
+        Group,
+        Embed,
+        EmbeddedMedia,
+        EmbedInlineField,
+        RolePermission,
+        RoleMember,
+        InlineKeyboardButton, InlineMarkup
+    )
+    from swibots.errors import NetworkError
+    from swibots import Client
 
-bot = Client(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAyMTMsImlzX2JvdCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJpYXQiOjE3MTM2NzIzNzUsImV4cCI6MjM0NDgyNDM3NX0.TiZLHCg5UXA6Hq89aVbwVuZUjGRzAemYC8Ih2gRzulo"
-)
+    bot = Client(
+        "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MTAyMTMsImlzX2JvdCI6dHJ1ZSwiYWN0aXZlIjp0cnVlLCJpYXQiOjE3MTM2NzIzNzUsImV4cCI6MjM0NDgyNDM3NX0.TiZLHCg5UXA6Hq89aVbwVuZUjGRzAemYC8Ih2gRzulo"
+    )
+except ImportError as r:
+    print(r)
+    bot = None
+
+from langchain.pydantic_v1 import BaseModel
 
 @tool
 async def update_community_description(description: str, community_id: str):

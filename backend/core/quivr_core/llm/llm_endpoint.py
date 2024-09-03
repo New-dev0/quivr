@@ -2,9 +2,13 @@ import logging
 from urllib.parse import parse_qs, urlparse
 
 from langchain_core.language_models.chat_models import BaseChatModel
-from langchain_ollama.llms import OllamaLLM
-from langchain_ollama.chat_models import ChatOllama
-from langchain_groq.chat_models import ChatGroq
+try:
+    from langchain_ollama.llms import OllamaLLM
+    from langchain_ollama.chat_models import ChatOllama
+    from langchain_groq.chat_models import ChatGroq
+except ImportError as er:
+    print(er)
+
 from pydantic.v1 import SecretStr
 
 from quivr_core.brain.info import LLMInfo
@@ -44,13 +48,13 @@ class LLMEndpoint:
                     else None,
                     azure_endpoint=azure_endpoint,
                 )
-            elif True:
+            elif False:
                 _llm = ChatGroq(
             api_key="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",
             model="llama3-groq-8b-8192-tool-use-preview",
  #             temperature=0.9
                 )
-            elif True or config.model.startswith("ollama/"):
+            elif config.model.startswith("ollama/"):
                 logger.info("Using Ollama LLM")
                 _llm = ChatOllama(
                     model="llama3", #config.model.split("/")[-1],

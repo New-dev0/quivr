@@ -1,0 +1,26 @@
+{
+ "chat_id": "adb13494-caa2-4ffd-9c41-b0da484eb136",
+ "message_id": "c56060df-fcb1-4fa5-97d2-d23f1b7ca26d",
+ "user_message": "Hi",
+ "message_time": "2024-09-01T18:47:46.860633",
+ "assistant": " I am a machine and do not have feelings or emotions. However, I am functioning as intended and ready to assist you with any questions or tasks you may have. How can I help you today?",
+ "prompt_title": null,
+ "brain_name": "Default brain",
+ "brain_id": "40ba47d7-51b2-4b2a-9247-89e29619efb0",
+ "metadata": {
+  "citations": null,
+  "followup_questions": null,
+  "sources": [],
+  "metadata_model": {
+   "name": "ollama/mistral",
+   "display_name": null,
+   "description": null,
+   "image_url": null,
+   "brain_id": null,
+   "brain_name": null
+  },
+  "snippet_color": "#d0c6f2",
+  "snippet_emoji": "\ud83e\udde0"
+ },
+ "thumbs": null
+}

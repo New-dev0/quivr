@@ -232,7 +232,8 @@ class QuivrQARAG:
         print("history:", history.get_chat_history())
         print("question:", question)
         print("cnf:", self.rag_config.prompt)
-    
+        print(conversational_qa_chain) 
+
         raw_llm_response = conversational_qa_chain.invoke(
             {
                 "question": question,

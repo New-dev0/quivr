@@ -26,6 +26,7 @@ torchvision = [
     { version = "0.18.1+cpu", source = "pytorch-cpu-src", platform = "linux", markers = "platform_machine == 'x86_64'" },
     { version = "0.18.1+cpu", source = "pytorch-cpu-src", platform = "win32" },
 ]
+langchain-ollama = "^0.1.3"
 langchain = "*"
 litellm = "*"
 openai = "*"

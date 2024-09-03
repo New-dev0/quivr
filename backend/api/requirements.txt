@@ -115,6 +115,8 @@ kombu[sqs]==5.3.7; python_version >= '3.8'
 langchain==0.2.2; python_version < '4.0' and python_full_version >= '3.8.1'
 langchain-cohere==0.1.5; python_version < '4.0' and python_full_version >= '3.8.1'
 langchain-community==0.2.3; python_version < '4.0' and python_full_version >= '3.8.1'
+langchain-ollama
+langchain-groq
 langchain-core==0.2.4; python_version < '4.0' and python_full_version >= '3.8.1'
 langchain-openai==0.1.8; python_version < '4.0' and python_full_version >= '3.8.1'
 langchain-text-splitters==0.2.1; python_version < '4.0' and python_full_version >= '3.8.1'
